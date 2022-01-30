@@ -1,7 +1,10 @@
 package com.example.accountservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -9,6 +12,8 @@ import java.util.Map;
 public class ServiceController {
 
     private Store store;
+    @Autowired
+    UserRepository userRepo;
 
     @Autowired
     public ServiceController(Store store) {
@@ -21,17 +26,13 @@ public class ServiceController {
     }
 
     @DeleteMapping("api/admin/user")
-    public String deleteUser(@RequestParam String email) {
-        User deletedUser = store.getUserStore().remove(email);
-        if (deletedUser instanceof User) {
-            return String.format("User %s:%s deleted", deletedUser.getEmail(), deletedUser.getName());
-        } else {
-            return "User doesn't exist";
-        }
+    public String deleteUser() {
+        return "deleteUser";
     }
 
     @GetMapping("api/admin/user")
-    public Map<String, User> getUsers() {
-        return store.getUserStore();
+    public Object getUsers() {
+        //return store.getUserStore();
+        return userRepo.getUsers();
     }
 }

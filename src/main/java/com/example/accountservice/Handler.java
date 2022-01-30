@@ -15,6 +15,7 @@ public class Handler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handle(Exception ex,
                                          HttpServletRequest request, HttpServletResponse response) {
+
         if (ex instanceof NullPointerException) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -26,4 +27,3 @@ public class Handler {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
-
