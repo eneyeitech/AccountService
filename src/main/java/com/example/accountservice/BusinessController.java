@@ -1,6 +1,7 @@
 package com.example.accountservice;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +15,12 @@ import java.util.Map;
 public class BusinessController {
 
     @GetMapping("api/empl/payment")
-    public Object getPayrolls(@AuthenticationPrincipal UserDetailsImpl details) {
+    public ResponseEntity<Object> getPayrolls(@AuthenticationPrincipal UserDetailsImpl details) {
         if (details == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("error", "email not valid"), HttpStatus.BAD_REQUEST);
         } else {
             User user = details.getUser();
-            return Map.of("id", user.getId(), "name", user.getName(), "lastname", user.getLastname(), "email", user.getEmail());
+            return new ResponseEntity<>(Map.of("id", user.getId(), "name", user.getName(), "lastname", user.getLastname(), "email", user.getEmail()), HttpStatus.OK);
         }
     }
 

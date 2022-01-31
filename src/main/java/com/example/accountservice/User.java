@@ -6,12 +6,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
     private String name;
     private String lastname;
     private String email;
+
+    @Size(min = 12, message = "The password length must be at least 12 chars!")
     private String password;
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

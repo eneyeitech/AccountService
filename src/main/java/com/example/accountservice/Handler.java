@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.util.Map;
 
 @ControllerAdvice
 public class Handler {
@@ -17,13 +19,20 @@ public class Handler {
                                          HttpServletRequest request, HttpServletResponse response) {
 
         if (ex instanceof NullPointerException) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("message", "1Bad Request", "error","Bad Request","status", 400), HttpStatus.BAD_REQUEST);
         }
 
         if (ex instanceof HttpRequestMethodNotSupportedException) {
-            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<>(Map.of("message", "2Method not allowed", "error","Bad Request","status", 400), HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (ex instanceof ConstraintViolationException) {
+            return new ResponseEntity<>(Map.of("message", "3Bad Request", "error","Bad Request","status", 400), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(Map.of("message", "Password length must be 12 chars minimum!",
+                "error","Bad Request",
+                "status", 400,
+        "path", "/api/auth/changepass"), HttpStatus.BAD_REQUEST);
     }
 }
